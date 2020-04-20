@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
+import Game from './pages/Game'
 
 export default () => {
   return (
-    <div>
-      Ben
-    </div>
+    <>
+      App component
+      <Game />
+    </>
   );
 }

@@ -9,7 +9,7 @@ export default () => {
   const [charCount, setCharCount] = useState(2);
 
 
-  const styles = {
+  const style = {
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
@@ -31,7 +31,7 @@ export default () => {
     <div onClick={onClick}>
       {transitions.map(({ props, key }) => {
         return (
-          <animated.div key={key} style={{ ...props, ...styles }} >
+          <animated.div key={key} style={{ ...props, ...style }} >
             <Game page={charCount}> </Game>
           </animated.div >
         )

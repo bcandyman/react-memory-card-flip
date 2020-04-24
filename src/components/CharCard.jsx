@@ -1,10 +1,9 @@
 import React from 'react';
 
-export default () => {
+
+export default ({ page }) => {
 
   return (
-    <>
-      CharCard Component
-    </>
+    <p>{page}</p>
   );
 };

@@ -1,12 +1,12 @@
 import React from 'react';
 import Round from '../components/Round'
 
-export default () => {
+export default ({ page }) => {
 
   return (
     <>
       Game Page
-      <Round />
+      <Round page={page} />
     </>
   );
 };

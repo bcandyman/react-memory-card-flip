@@ -1,7 +1,0 @@
-.simple-trans-main > div {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  will-change: transform, opacity;
-}

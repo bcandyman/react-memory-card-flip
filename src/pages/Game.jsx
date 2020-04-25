@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { useTransition, animated } from 'react-spring'
 import Round from '../components/Round'
 
@@ -26,7 +26,13 @@ export default () => {
   })
 
 
-  const onClick = useCallback(() => setRoundParams({ ...roundParams, round: roundParams.round += 1 }), [])
+  //TODO: This set rounds is commented for testing.
+  const onClick = () => {
+    return setRoundParams({
+      ...roundParams,
+      // round: roundParams.round += 1
+    })
+  }
 
 
   return (

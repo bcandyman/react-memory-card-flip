@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CharCard from './CharCard';
 import chars from '../characters/characters';
+import { Grid } from '@material-ui/core'
 
 
 export default ({ roundParams }) => {
+
+  useEffect(() => setCharsArr(selectChars(chars, roundParams.charNum)), [roundParams.charNum]);
+
+  const [charsArr, setCharsArr] = useState([]);
 
   const selectChars = (arr, limit) => {
 
@@ -17,22 +22,30 @@ export default ({ roundParams }) => {
       return result;
     }
 
-    const addDups = (arr) => arr.reduce((pV, cV, cI, arr) => [...pV, cV, cV], []);
+    const addDups = (arr) => arr
+      .reduce((pV, cV) => [...pV, cV + '-1', cV + '-2'], []);
 
+    const randomizeArr = (arr) => arr
+      .reduce((pV, cV) => {
+        const x = Math.floor(Math.random() * pV.length);
+        pV.splice(x, 0, cV)
+        return pV
+      }, [])
 
-    const randomChars = getRandomChars(limit);
-    console.log(addDups(randomChars));
-
-    return randomChars;
+    const x = getRandomChars(limit);
+    const y = addDups(x)
+    const z = randomizeArr(y)
+    return z;
   }
 
 
-  console.log(selectChars(chars, roundParams.charNum));
-
   return (
-    <>
-      Round Component
-      <CharCard roundParams={roundParams} />
-    </>
+    <Grid container justify="center" spacing={1}>
+      {charsArr.map((val, index) => (
+        < Grid item key={index} style={{ minWidth: '150px', maxWidth: '250px', flexBasis: '25%' }}>
+          <CharCard key={index} character={val.split('-')[0]} id={val} />
+        </ Grid>
+      ))}
+    </Grid>
   );
 };

@@ -13,7 +13,6 @@ export default () => {
   const style = {
     position: 'absolute',
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
     willChange: 'transform, opacity',
   }
@@ -29,10 +28,10 @@ export default () => {
   //TODO: This set rounds is commented for testing.
   const onClick = () => {
     return setRoundParams({
-      ...roundParams,
-      // round: roundParams.round += 1
+      charNum: roundParams.charNum += 2,
+      round: roundParams.round += 1
     })
-  }
+  };
 
 
   return (

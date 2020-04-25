@@ -1,9 +1,12 @@
 import React from 'react';
 
 
-export default ({ page }) => {
+export default ({ roundParams }) => {
 
   return (
-    <p>{page}</p>
+    <>
+    <p>Round: {roundParams.round}</p>
+    <p>Characters: {roundParams.charNum}</p>
+    </>
   );
 };

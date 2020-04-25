@@ -1,12 +1,12 @@
 import React from 'react';
 import CharCard from './CharCard'
 
-export default ({ page }) => {
+export default ({ roundParams }) => {
 
   return (
     <>
       Round Component
-      <CharCard page={page} />
+      <CharCard roundParams={roundParams} />
     </>
   );
 };

@@ -25,24 +25,21 @@ export default () => {
   })
 
 
-  //TODO: This set rounds is commented for testing.
-  const onClick = () => {
-    return setRoundParams({
-      charNum: roundParams.charNum += 2,
-      round: roundParams.round += 1
-    })
-  };
+  const handleLevelUp = () => setRoundParams({
+    charNum: roundParams.charNum += 2,
+    round: roundParams.round += 1
+  });
 
 
-  return (
-    <div onClick={onClick}>
-      {transitions.map(({ props, key }) => {
-        return (
-          <animated.div key={key} style={{ ...props, ...style }} >
-            <Round roundParams={roundParams}> </Round>
-          </animated.div >
-        )
-      })}
-    </div>
-  )
+return (
+  <div>
+    {transitions.map(({ props, key }) => {
+      return (
+        <animated.div key={key} style={{ ...props, ...style }} >
+          <Round roundParams={roundParams} handleLevelUp={handleLevelUp}> </Round>
+        </animated.div >
+      )
+    })}
+  </div>
+)
 }

@@ -1,10 +1,13 @@
-import React from 'react'
-import Game from './pages/Game'
+import React from 'react';
+import Game from './pages/Game';
+import AppBar from './components/Appbar';
 
 
 export default () => {
 
-  return (
+  return (<>
+    <AppBar />
     <Game />
+  </>
   )
 }

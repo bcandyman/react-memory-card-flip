@@ -21,12 +21,23 @@ export default ({ roundParams, handleLevelUp }) => {
   // runs when a new round is initialized. 
   // initializes all arrays and objects to control state of play
   useEffect(() => {
+    // console.log('after');
     // select which caracters will be displayed on the round
     const selectedChar = selectChars(chars, roundParams.charNum);
     // configure character data for entry into state
     setCharsArr(selectedChar)
     // set state to keep track of flipped cards, setting each object value to false
+    console.log(3);
     setFlipStatus(selectedChar.reduce((pV, cV) => ({ ...pV, [cV]: false }), {}))
+    console.log(4);
+
+    return () => {
+      console.log('unmounting');
+      window.removeEventListener('onClick',onHandleFlip)
+      window.removeEventListener('onClick',handleLevelUp)
+      window.removeEventListener('onClick',roundParams)
+
+    };
   }, [roundParams.charNum]);
 
   // checks if all cards displayed to the user have been matched.
@@ -35,34 +46,46 @@ export default ({ roundParams, handleLevelUp }) => {
     // contains all keys that have a 'true' value to determine which cards have been reset
     const unFlippedCards = Object.keys(flipStatus).filter(val => flipStatus[val] === true)
     // if all cards have a value of 'true' or isChangingRounds flag has been raised
+    console.log('in-useEffect');
     if (unFlippedCards.length === Object.keys(flipStatus).length || isChangingRounds.current === true) {
+
       // raise flag until all cards have been flipped
       isChangingRounds.current = true;
       // raise flag to disable user interaction until all cards have been flipped
       disableCardFlip.current = true;
-      prepareForLevelUp(unFlippedCards);
+
+      prepareForLevelUp(unFlippedCards)
+
+
     }
+
+
+
   }, [flipStatus]);
 
 
   // unflip all cards in preparation of level up
   const prepareForLevelUp = (x) => {
+    console.log('in-prepareForLevelUp');
     // check for cards to flip. 
     // if array is empty, all cards have been flipped.
     if (x.length === 0) {
+      console.log('in-handleLevelUp');
       // lower flag for next round of play
       isChangingRounds.current = false;
       // lower flag to allow user interaction
       disableCardFlip.current = true;
       // load next round
       setTimeout(() => handleLevelUp(), 1000);
+    } else {
+      console.log('in-setFlipStatus');
+      // select a random value to determine which card to flip
+      const y = x.splice(getRandomIndex(x), 1);
+      // determine how long each card has to flip
+      const t = 2000 / (roundParams.charNum * 2);
+      // flip the card
+      setTimeout(() => setFlipStatus({ ...flipStatus, [y]: false }), t);
     }
-    // select a random value to determine which card to flip
-    const y = x.splice(getRandomIndex(x), 1);
-    // determine how long each card has to flip
-    const t = 2000 / (roundParams.charNum * 2);
-    // flip the card
-    setTimeout(() => setFlipStatus({ ...flipStatus, [y]: false }), t);
   };
 
   // returns random integer from 0 to arr length
@@ -104,19 +127,15 @@ export default ({ roundParams, handleLevelUp }) => {
   const onHandleFlip = e => {
     // ensure a timer from a previous selection is not active
     if (disableCardFlip.current === false) {
-      console.log('b');
       // record which card was selected by the user
       const id = e.currentTarget.dataset.id;
       // only flip the card if it was face down and not displaying the character
       if (flipStatus[id] === false) {
         userPicks.current.push(id)
-        console.log('c');
-
         setFlipStatus({ ...flipStatus, [id]: true })
       }
       // if this is the user's second card selection
       if (userPicks.current.length === 2) {
-        console.log('d');
         // if the user's has selected a matching pair of cards
         if (userPicks.current[0].split('-')[0] !== userPicks.current[1].split('-')[0]) {
           setTimeout(() => {

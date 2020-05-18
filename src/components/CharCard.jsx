@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import CharImage from './CharImage';
 
 export default ({ character, id, flipped, onHandleFlip }) => {
+
+  useEffect(() => {
+    return () => {
+      console.log('googly');
+      window.removeEventListener('onClick', onHandleFlip)
+
+    }
+  }, [])
 
   return (
     <div data-id={id} data-character={character} onClick={onHandleFlip}>

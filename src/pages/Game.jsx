@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTransition, animated } from 'react-spring'
 import Round from '../components/Round'
 
@@ -6,13 +6,18 @@ export default () => {
 
   const [roundParams, setRoundParams] = useState({
     round: 1,
-    charNum: 1
+    params0: {
+      charNum: 1
+    },
+    params1: {
+      charNum: 1
+    }
   });
 
 
-  const style = {
+  const styles = {
     position: 'absolute',
-    width:'100%',
+    width: '100%',
     willChange: 'transform, opacity',
   }
 
@@ -24,22 +29,45 @@ export default () => {
     config: { mass: 10, tension: 50, friction: 40 }
   })
 
+  useEffect(() => {
+    // console.log(roundParams);
+    console.log('in-useEffect-roundParams');
+  }, [roundParams])
 
-  const handleLevelUp = () => setRoundParams({
-    charNum: roundParams.charNum += 1,
-    round: roundParams.round += 1
-  });
 
+  const handleLevelUp = (page) => {
+    console.log('in-handleLevelUp2');
+    let temp = { ...roundParams, round: roundParams.round + 1 };
 
-return (
-  <>
-    {transitions.map(({ props, key }) => {
-      return (
-        <animated.div key={key} style={{ ...props, ...style }} >
-          <Round roundParams={roundParams} handleLevelUp={handleLevelUp}> </Round>
-        </animated.div >
-      )
-    })}
-  </>
-)
+    if (page === 0) {
+      temp.params1.charNum = temp.params0.charNum + 1
+    } else {
+      temp.params0.charNum = temp.params1.charNum + 1
+    };
+    console.log(1);
+    // return ()=>{
+
+    // }
+    setRoundParams(temp);
+    console.log(2);
+  }
+
+  const pages = [
+    ({ style }) => <animated.div style={{ ...styles, ...style }}>
+      <Round roundParams={roundParams.params0} handleLevelUp={() => handleLevelUp(0)} />
+    </animated.div>,
+    ({ style }) => <animated.div style={{ ...styles, ...style }}>
+      <Round roundParams={roundParams.params1} handleLevelUp={() => handleLevelUp(1)} />
+    </animated.div>
+  ]
+
+  return (
+    <>
+      {transitions.map(({ item, props, key }) => {
+
+        const Page = pages[item % 2]
+        return <Page key={key} style={props} />
+      })}
+    </>
+  )
 }
